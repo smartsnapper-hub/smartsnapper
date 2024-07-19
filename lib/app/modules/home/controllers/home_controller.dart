@@ -1,0 +1,179 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geodesy/geodesy.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:smartsnapper/app/Network/ApiService.dart';
+import 'package:smartsnapper/app/models/manual_snap/manual_snap.dart';
+
+class HomeController extends GetxController {
+  //TODO: Implement HomeController
+
+  final count = 0.obs;
+  Geodesy geodesy = Geodesy();
+
+  List<Polygon> polygones=[];
+  List<bool> isSelectedPolygon=List.filled(25, false);
+  List<List<LatLng>> coordinates= [];
+  List<LatLng> listOfCenterCoordinates=[];
+  LatLng centerCoordinates=const LatLng(0, 0);
+  String _reportLat="";
+  String _reportLong="";
+  String _reportAlt="";
+
+  String selectedDamageText="";
+  bool isSatellite=false;
+  MyVector selectedDatum=MyVector("uhrzeit", "datum", "areaseal");
+  MapController? mapController;
+  set setSatelliteView(bool value){
+    isSatellite=value;
+    update();
+  }
+  var selectedIndex = 0;
+
+  
+  List<MyVector> listOfData=[];
+  ManualSnap? manualSnap;  
+  String datum="";
+  String uhrzeit="";
+  String blxwsg="";
+  String blywsg="";
+  String brxwsg="";
+  String brywsg="";
+  String tlxwsg="";
+  String tlywsg="";
+  String trxwsg="";
+  String trywsg="";
+  String cxwgs="";
+  String cywgs="";
+  bool _captureManualSnap=false;
+  bool get captureManualSnap=>_captureManualSnap;
+  set setManualSnap(bool value){
+    _captureManualSnap=value;
+    update();
+  }
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  void increment() => count.value++;
+
+  void onItemTapped(int index) {
+    selectedIndex = index;
+    update();
+    // Handle screen changes here if necessary
+  }
+
+  Future<void> sendManualSnap({bool isDialog=false}) async {
+    try {
+      // print(otp);
+      if(isDialog) Get.defaultDialog(title: 'Loading', content: const CircularProgressIndicator());
+      setManualSnap=true;
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+        forceAndroidLocationManager: false);
+      _reportLat=position.latitude.toString();
+      _reportLong=position.longitude.toString();
+      _reportAlt=position.altitude.toString();
+        // Get.find<HomeController>().empty_list();
+      String latLng="";
+      String regioncode;
+      latLng='${position.latitude},${position.longitude}';
+      if(position.latitude>=36.0)
+      {
+        regioncode="rg3";
+      }else if(position.latitude<36.0&&position.latitude>-36.0){
+        regioncode="rg7";
+      }else{
+        regioncode="rg9";
+      }
+      final resp=await ApiService.sendManualSnap(regioncode,latLng );
+
+      print(resp);
+      manualSnap=ManualSnap.fromJson(resp);
+      setManualSnap=false;
+      manualSnap=ManualSnap.fromJson(resp??{});
+  //   final tempLat= double.parse(manualSnap!.csvDataResult!.first.cxwgs??"0");
+  //   final tempLong= double.parse(manualSnap!.csvDataResult!.first.cywgs??"0");
+  //   mapController = MapController.withPosition(
+  //                           initPosition: GeoPoint(latitude: tempLat, longitude: tempLong),
+  //                           areaLimit: BoundingBox( 
+  //                               east: tempLat+0.001, 
+  //                               north: tempLong+0.001, 
+  //                               south: tempLong-0.001, 
+  //                               west:  tempLat-0.001,
+  //                     ),
+  //           );
+        polygones=[];
+        coordinates=[];
+        for (var ele in manualSnap!.csvDataResult!){
+
+          double latitude1=double.parse(ele.blywsg??"0.0");
+          double longitude1=double.parse(ele.blxwsg??"0.0");
+
+          double latitude2=double.parse(ele.brywsg??"0.0");
+          double longitude2=double.parse(ele.brxwsg??"0.0");
+
+          
+          
+          double latitude3=double.parse(ele.trywsg??"0.0");
+          double longitude3=double.parse(ele.trxwsg??"0.0");
+
+          double latitude4=double.parse(ele.tlywsg??"0.0");
+          double longitude4=double.parse(ele.tlxwsg??"0.0");
+          double centerLatitude=double.parse(ele.cywgs??"0.0");
+          double centerLongitude=double.parse(ele.cxwgs??"0.0");
+          centerCoordinates=LatLng(centerLatitude, centerLongitude);
+          listOfCenterCoordinates.add(centerCoordinates);
+          listOfData.add(MyVector(ele.uhrzeit??"", ele.datum??"", ele.areaseal??""));
+          coordinates.add([LatLng(latitude1, longitude1),LatLng(latitude2, longitude2),LatLng(latitude3, longitude3),LatLng(latitude4, longitude4)]);
+          print("coordinates are"); 
+          print(coordinates.last);
+          print(listOfCenterCoordinates);
+        }
+        coordinates.forEach(((e) {
+          polygones.add(Polygon(points: e,
+                            // color: Colors.blue,
+                            color: isSelectedPolygon[coordinates.indexOf(e)]?Colors.green.shade700:Colors.white54,
+                            borderColor:isSelectedPolygon[coordinates.indexOf(e)]?Colors.green.shade900: Colors.blue,
+                            borderStrokeWidth: 3.0,
+                            isFilled: true,));
+        }));
+          
+          print("Polygones are");
+          print(polygones);
+          print("Reached in popping dialog 22");
+          if(isDialog){
+            print("Reached in popping dialog");
+            Get.back();
+            Get.back();
+          }
+          mapController=MapController();
+      update();
+      // Get.toNamed('/map-display',arguments: resp);
+    } catch (e, stacktrace) {
+      // print(stacktrace);
+      print(e);
+      print(stacktrace);
+      // print(e);
+    }
+  }
+}
+
+class MyVector {
+   String uhrzeit;
+   String datum;
+   String areaseal;
+   MyVector(this.uhrzeit, this.datum, this.areaseal);
+ }
