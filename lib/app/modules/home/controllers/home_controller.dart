@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:smartsnapper/app/Network/ApiService.dart';
 import 'package:smartsnapper/app/models/manual_snap/manual_snap.dart';
+import 'package:smartsnapper/app/widgets/permission_dialog.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -30,8 +31,8 @@ class HomeController extends GetxController {
     update();
   }
   var selectedIndex = 0;
-
-  
+  int selectedNavIndex = 0;
+  int mapIndex=0;
   List<MyVector> listOfData=[];
   ManualSnap? manualSnap;  
   String datum="";
@@ -52,9 +53,20 @@ class HomeController extends GetxController {
     _captureManualSnap=value;
     update();
   }
+
+  void onItemTappedNav(int index) {
+    selectedNavIndex = index;
+    update();
+  }
+  set setMapIndex(int value){
+    mapIndex=value;
+    update();
+  }
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    await checkPermission();
+    sendManualSnap();
   }
 
   @override
@@ -75,10 +87,26 @@ class HomeController extends GetxController {
     // Handle screen changes here if necessary
   }
 
-  Future<void> sendManualSnap({bool isDialog=false}) async {
+  Future<void> checkPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      // if(permission == LocationPermission.always || permission == LocationPermission.whileInUse){
+      //   Get.toNamed('/google-map-integration');
+      // }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      Get.dialog(PermissionDialog());
+    } else if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      // Get.toNamed('/google-map-integration');
+    }
+  }
+  Future<void> sendManualSnap({bool isRelocate=false}) async {
     try {
       // print(otp);
-      if(isDialog) Get.defaultDialog(title: 'Loading', content: const CircularProgressIndicator());
+      if(isRelocate) Get.defaultDialog(title: 'Loading', content: const CircularProgressIndicator());
       setManualSnap=true;
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
@@ -117,6 +145,7 @@ class HomeController extends GetxController {
   //           );
         polygones=[];
         coordinates=[];
+        isSelectedPolygon = List.filled(25, false);
         for (var ele in manualSnap!.csvDataResult!){
 
           double latitude1=double.parse(ele.blywsg??"0.0");
@@ -154,12 +183,14 @@ class HomeController extends GetxController {
           print("Polygones are");
           print(polygones);
           print("Reached in popping dialog 22");
-          if(isDialog){
+          if(isRelocate){
+            mapController!.move(centerCoordinates, 17.5);
             print("Reached in popping dialog");
             Get.back();
             Get.back();
           }
           mapController=MapController();
+          
       update();
       // Get.toNamed('/map-display',arguments: resp);
     } catch (e, stacktrace) {

@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smartsnapper/app/modules/home/controllers/home_controller.dart';
+import 'package:smartsnapper/app/modules/home/views/map_widget.dart';
 
 class BottomNavBar extends StatelessWidget {
   @override
@@ -10,10 +13,13 @@ class BottomNavBar extends StatelessWidget {
     return GetBuilder<HomeController>(
       builder: (controller) {
         return BottomNavigationBar(
-          // selectedLabelStyle:const TextStyle(color: Colors.yellow),
-          // unselectedLabelStyle:const TextStyle(color: Colors.yellow),
+          
+          selectedLabelStyle: TextStyle(
+              color: Colors.orange.shade800, fontWeight: FontWeight.w700),
+          unselectedLabelStyle: TextStyle(
+              color: Colors.green.shade700, fontWeight: FontWeight.w700),
           type: BottomNavigationBarType.fixed,
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.article,
@@ -51,7 +57,8 @@ class BottomNavBar extends StatelessWidget {
             ),
           ],
           currentIndex: controller.selectedIndex,
-          selectedItemColor: Colors.orange.shade800,
+          selectedItemColor: Colors.green.shade700,
+          unselectedItemColor: Colors.grey.shade700,
           onTap: controller.onItemTapped,
         );
       },
@@ -61,66 +68,175 @@ class BottomNavBar extends StatelessWidget {
 
 class HomeView extends GetView<HomeController> {
   HomeView({Key? key}) : super(key: key);
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(builder: (controller) {
       print("Coordinates are");
       print(controller.coordinates.isEmpty);
       print(controller.polygones);
+
       return Scaffold(
-         key: _scaffoldKey,
+        extendBody: true,
+          key: _scaffoldKey,
           backgroundColor: Colors.white,
           //  bottomNavigationBar: BottomNavBar(),
           drawerEdgeDragWidth: 20.0,
           // appBar: AppBar(),
           floatingActionButton: GestureDetector(
-            onTap: (){
-
-            },
+            onTap: () {},
             child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    // spreadRadius: 1,
-                    blurRadius: 5
-                )
-                ],
-                color: Colors.orange.shade400,
-                // borderRadius: BorderRadius.circular(70),
-                shape: BoxShape.circle
-                ),
-              child: const Icon(Icons.add, size: 20,)
-            ),
+                width: 75,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                          // spreadRadius: 1,
+                          blurRadius: 5)
+                    ],
+                    color: Colors.green.shade300..withOpacity(0.7),
+                    // borderRadius: BorderRadius.circular(70),
+                    shape: BoxShape.circle),
+                child: Image.asset('assets/images/logo3.png')),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomNavBar(),
-          // bottomNavigationBar: BottomAppBar(
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       Expanded(
-          //         child: IconButton(
-          //             onPressed: () {}, icon: const Icon(Icons.home)),
-          //       ),
-          //       Expanded(
-          //         child: IconButton(
-          //             onPressed: () {}, icon: const Icon(Icons.show_chart)),
-          //       ),
-          //       Expanded(child: Text('')),
-          //       Expanded(
-          //         child:
-          //             IconButton(onPressed: () {}, icon: const Icon(Icons.tab)),
-          //       ),
-          //       Expanded(
-          //         child: IconButton(
-          //             onPressed: () {}, icon: const Icon(Icons.settings)),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          // bottomNavigationBar: BottomNavBar(),
+          bottomNavigationBar: BottomAppBar(
+            // color: Colors.transparent,
+            height: 100,
+            // surfaceTintColor: Colors.transparent,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 15.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () => controller.onItemTappedNav(0),
+                      icon: Icon(Icons.home, size: 30,),
+                      color: controller.selectedNavIndex == 0
+                          ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                          : Colors.grey.shade700,
+                    ),
+                    Text(
+                      'Home',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: controller.selectedNavIndex == 0
+                            ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                            : Colors.grey.shade700,
+                            fontWeight: FontWeight.w600
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () => controller.onItemTappedNav(1),
+                      icon: const Icon(Icons.show_chart, size: 30,),
+                      color: controller.selectedNavIndex == 1
+                          ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                          : Colors.grey.shade700,
+                    ),
+                    Text(
+                      'Chart',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: controller.selectedNavIndex == 1
+                            ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                            : Colors.grey.shade700,
+                            fontWeight: FontWeight.w600
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // const Expanded(child: SizedBox.shrink()),
+               Expanded(child: Center(
+                 child: Padding(
+                   padding: const EdgeInsets.only(top: 50),
+                   child: Text(
+                          'Map',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey.shade700, 
+                            fontWeight: FontWeight.w600
+                            // controller.selectedNavIndex == 1
+                            //     ? Colors.orange.shade800
+                            //     :
+                                 
+                          ),
+                        ),
+                 ),
+               ),),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () => controller.onItemTappedNav(2),
+                      icon: const Icon(Icons.tab, size: 30,),
+                      color: controller.selectedNavIndex == 2
+                          ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                          : Colors.grey.shade700,
+                    ),
+                    Text(
+                      'Tabs',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: controller.selectedNavIndex == 2
+                            ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                            : Colors.grey.shade700,
+                            fontWeight: FontWeight.w600
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () => controller.onItemTappedNav(3),
+                      icon: const Icon(Icons.settings, size: 30,),
+                      color: controller.selectedNavIndex == 3
+                          ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                          : Colors.grey.shade700,
+                          
+                    ),
+                    Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: controller.selectedNavIndex == 3
+                            ? Colors.green.shade700
+                                                  .withOpacity(0.7)
+                            : Colors.grey.shade700,
+                            fontWeight: FontWeight.w700
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
           // endDrawer: const DrawerScreen(),
           body: Stack(
             alignment: Alignment.topRight,
@@ -131,200 +247,192 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   Expanded(
                     child: (controller.coordinates.isEmpty)
-                    // ? Text("Test Coordinates")
+                        // ? Text("Test Coordinates")
 
                         ? const FlutterMapWidget()
-                        : FlutterMap(
-                          mapController: controller.mapController,
-                            options: MapOptions(
-                              onTap: (tapPosition, point) async {
-                                int selectedIndex = -1;
-                                print(tapPosition);
-                                controller.isSelectedPolygon=List.filled(25, false);
-                                controller.mapController!.move(point, 18.3);
-                                // controller.update();
-                                controller.polygones.forEach((element) {
-                                  // if point is on the polygon isGeoPointInPolygon iS true
-                                  bool isGeoPointInPolygon = controller.geodesy
-                                      .isGeoPointInPolygon(
-                                          point, element.points);
-                                  if (isGeoPointInPolygon == true) {
-                                    print(element.points);
-                                    selectedIndex =
-                                        controller.polygones.indexOf(element);
-                                    controller
-                                            .isSelectedPolygon[selectedIndex] =
-                                        true;
-
-                                    controller.blywsg = controller
-                                        .coordinates[selectedIndex][0].latitude
-                                        .toString();
-                                    controller.blxwsg = controller
-                                        .coordinates[selectedIndex][0].longitude
-                                        .toString();
-
-                                    controller.brywsg = controller
-                                        .coordinates[selectedIndex][1].latitude
-                                        .toString();
-                                    controller.brxwsg = controller
-                                        .coordinates[selectedIndex][1].longitude
-                                        .toString();
-
-                                    controller.trywsg = controller
-                                        .coordinates[selectedIndex][2].latitude
-                                        .toString();
-                                    controller.trxwsg = controller
-                                        .coordinates[selectedIndex][2].longitude
-                                        .toString();
-
-                                    controller.tlywsg = controller
-                                        .coordinates[selectedIndex][3].latitude
-                                        .toString();
-                                    controller.tlxwsg = controller
-                                        .coordinates[selectedIndex][3].longitude
-                                        .toString();
-
-                                    controller.cywgs = controller
-                                        .listOfCenterCoordinates[selectedIndex]
-                                        .latitude
-                                        .toString();
-                                    controller.cxwgs = controller
-                                        .listOfCenterCoordinates[selectedIndex]
-                                        .longitude
-                                        .toString();
-                                    controller.selectedDatum = MyVector(
-                                        controller
-                                            .listOfData[selectedIndex].uhrzeit,
-                                        controller
-                                            .listOfData[selectedIndex].datum,
-                                        controller.listOfData[selectedIndex]
-                                            .areaseal);
-                                  }
-                                });
-                                if (selectedIndex != -1) {
-                                  controller.polygones = [];
-                                  controller.coordinates.forEach(((e) {
-                                    controller.polygones.add(Polygon(
-                                      points: e,
-                                      // color: Colors.blue,
-                                      color: controller.isSelectedPolygon[
-                                              controller.coordinates.indexOf(e)]
-                                          ? Colors.green.shade700
-                                          : Colors.white54,
-                                      borderColor: controller.isSelectedPolygon[
-                                              controller.coordinates.indexOf(e)]
-                                          ? Colors.green.shade900
-                                          : Colors.blue,
-                                      borderStrokeWidth: 3.0,
-                                      isFilled: true,
-                                    ));
-                                  }));
-                                  controller.update();
-                                  // await Get.defaultDialog(
-                                  //     title: "Actions",
-                                  //     content: const ShowDialog());
-                                  
-                                  // controller.isSelectedPolygon[selectedIndex] =
-                                  //     false;
-                                  
-                                  
-                                }else{
-                                  controller.isSelectedPolygon=List.filled(25, false);
-                                  controller.polygones = [];
-                                  controller.coordinates.forEach(((e) {
-                                    controller.polygones.add(Polygon(
-                                      points: e,
-                                      // color: Colors.blue,
-                                      color: controller.isSelectedPolygon[
-                                              controller.coordinates.indexOf(e)]
-                                          ? Colors.green.shade700
-                                          : Colors.white54,
-                                      borderColor: controller.isSelectedPolygon[
-                                              controller.coordinates.indexOf(e)]
-                                          ? Colors.green.shade900
-                                          : Colors.blue,
-                                      borderStrokeWidth: 3.0,
-                                      isFilled: true,
-                                    ));
-                                  }));
-                                  controller.update();
-                                }
-                              },
-                              center: controller.centerCoordinates,
-                              zoom: 17.5,
-                            ),
-                            children: [
-                              (controller.isSatellite)?TileLayer(
-                                urlTemplate:
-                                    'https://mts1.google.com/vt/lyrs=s@186112443&x={x}&y={y}&z={z}',
-                                subdomains: [
-                                  'mt0',
-                                  'mt1',
-                                  'mt2',
-                                  'mt3'
-                                ], // No subdomains needed for Google Hybrid tiles
-                              )
-                              :TileLayer(
-                                urlTemplate:
-                                    'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
-                                subdomains: [
-                                  'mt0',
-                                  'mt1',
-                                  'mt2',
-                                  'mt3'
-                                ], // No subdomains needed for Google Hybrid tiles
-                              ),
-                              PolygonLayer(polygons: controller.polygones),
-                            ],
-                          ),
+                        : const MapWidget(),
                   ),
                 ],
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 50,),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(70),
+              Container(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SizedBox(
+                      height: 50,
                     ),
-                    child: IconButton(onPressed: (){
-                      _scaffoldKey.currentState?.openDrawer();
-                    }, icon: const Icon(
-                      Icons.menu,
-                      size: 35
-                      
-                    )),
-                  ),
-                  const SizedBox(height: 10,),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: (controller.isSatellite)?Colors.white:Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(70),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(70),
+                      ),
+                      child: IconButton(
+                          onPressed: () {
+                            _scaffoldKey.currentState?.openDrawer();
+                          },
+                          icon: const Icon(Icons.menu, size: 35)),
                     ),
-                    child: IconButton(onPressed: (){
-                      controller.setSatelliteView=!controller.isSatellite;
-                    }, icon: const Icon(
-                      Icons.layers,
-                      size: 35
-                    )),
-                  ),
-                  const SizedBox(height: 10,),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(70),
+                    const SizedBox(
+                      height: 15,
                     ),
-                    child: IconButton(onPressed: () async {
-                      await Get.defaultDialog(title: "Actions",content: const ShowDialog2());
-                    }, icon: const Icon(
-                      Icons.near_me,
-                      size: 35
-                      
-                    )),
-                  ),
-                ],
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (controller.isSatellite)
+                          Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
+                              color: (controller.isSatellite)
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 8),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.setMapIndex = 0;
+                                  },
+                                  child: Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: Image.asset(
+                                                  'assets/images/satellite_image.jpg')
+                                              .image,
+                                          fit: BoxFit.cover),
+                                      color: Colors.green.shade500,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.setMapIndex = 1;
+                                  },
+                                  child: Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: Image.asset(
+                                                  'assets/images/satellite_image.jpg')
+                                              .image,
+                                          fit: BoxFit.cover),
+                                      color: Colors.green.shade500,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.setMapIndex = 2;
+                                  },
+                                  child: Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: Image.asset(
+                                            'assets/images/base_map.png',
+                                          ).image,
+                                          fit: BoxFit.cover),
+                                      color: Colors.blue.shade500,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Image.asset(
+                                        'assets/images/base_map.png'),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (controller.isSatellite)
+                          const SizedBox(
+                            width: 15,
+                          ),
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(70),
+                          ),
+                          child: IconButton(
+                              onPressed: () {
+                                controller.setSatelliteView =
+                                    !controller.isSatellite;
+                              },
+                              icon: const Icon(Icons.layers, size: 35)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(70),
+                      ),
+                      child: IconButton(
+                          onPressed: () async {
+                            // await Get.defaultDialog(title: "Actions",content: const ShowDialog2());
+                            await controller.sendManualSnap(isRelocate: true);
+                          },
+                          icon: const Icon(Icons.near_me, size: 35)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ));
@@ -342,43 +450,40 @@ class FlutterMapWidget extends StatefulWidget {
 class _FlutterMapWidgetState extends State<FlutterMapWidget> {
   @override
   Widget build(BuildContext context) {
-    return  GetBuilder<HomeController>(
-      builder: (controller) {
-        return FlutterMap(
-                              
-                                options: MapOptions(
-                                  onTap: (tapPosition, point) async {
-                                    
-                                  },
-                                  center: LatLng(51.5, 0.1276),
-                                  zoom: 12,
-                                ),
-                                children: [
-                                  (controller.isSatellite)?TileLayer(
-                                    urlTemplate:
-                                        'https://mts1.google.com/vt/lyrs=s@186112443&x={x}&y={y}&z={z}',
-                                    subdomains: [
-                                      'mt0',
-                                      'mt1',
-                                      'mt2',
-                                      'mt3'
-                                    ], // No subdomains needed for Google Hybrid tiles
-                                  )
-                                  :TileLayer(
-                                    urlTemplate:
-                                        'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
-                                    subdomains: [
-                                      'mt0',
-                                      'mt1',
-                                      'mt2',
-                                      'mt3'
-                                    ], // No subdomains needed for Google Hybrid tiles
-                                  ),
-                                  PolygonLayer(polygons: controller.polygones),
-                                ],
-                              );
-      }
-    );
+    return GetBuilder<HomeController>(builder: (controller) {
+      return FlutterMap(
+        options: MapOptions(
+          maxZoom: 18.4,
+          onTap: (tapPosition, point) async {},
+          center: const LatLng(51.5, 0.1276),
+          zoom: 12,
+        ),
+        children: [
+          (controller.isSatellite)
+              ? TileLayer(
+                  urlTemplate:
+                      'https://mts1.google.com/vt/lyrs=s@186112443&x={x}&y={y}&z={z}',
+                  subdomains: const [
+                    'mt0',
+                    'mt1',
+                    'mt2',
+                    'mt3'
+                  ], // No subdomains needed for Google Hybrid tiles
+                )
+              : TileLayer(
+                  urlTemplate:
+                      'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                  subdomains: const [
+                    'mt0',
+                    'mt1',
+                    'mt2',
+                    'mt3'
+                  ], // No subdomains needed for Google Hybrid tiles
+                ),
+          PolygonLayer(polygons: controller.polygones),
+        ],
+      );
+    });
   }
 }
 
@@ -406,7 +511,7 @@ class ShowDialog2 extends StatelessWidget {
                       ),
                     ),
                     onPressed: () async {
-                      await controller.sendManualSnap(isDialog: true);
+                      // await controller.sendManualSnap(isDialog: true);
                       Get.back();
                     },
                     child: const Text(
@@ -421,6 +526,8 @@ class ShowDialog2 extends StatelessWidget {
     });
   }
 }
+
+
 
 
 class ShowDialog extends StatelessWidget {
@@ -446,7 +553,7 @@ class ShowDialog extends StatelessWidget {
                     ),
                   ),
                   onPressed: () async {
-                    await controller.sendManualSnap(isDialog: true);
+                    await controller.sendManualSnap(isRelocate: true);
                     Get.back();
                   },
                   child: const Text(
