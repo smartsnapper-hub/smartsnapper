@@ -13,7 +13,6 @@ class BottomNavBar extends StatelessWidget {
     return GetBuilder<HomeController>(
       builder: (controller) {
         return BottomNavigationBar(
-          
           selectedLabelStyle: TextStyle(
               color: Colors.orange.shade800, fontWeight: FontWeight.w700),
           unselectedLabelStyle: TextStyle(
@@ -75,9 +74,9 @@ class HomeView extends GetView<HomeController> {
       print("Coordinates are");
       print(controller.coordinates.isEmpty);
       print(controller.polygones);
-
+      final device=MediaQuery.of(context).size;
       return Scaffold(
-        extendBody: true,
+          extendBody: true,
           key: _scaffoldKey,
           backgroundColor: Colors.white,
           //  bottomNavigationBar: BottomNavBar(),
@@ -86,18 +85,23 @@ class HomeView extends GetView<HomeController> {
           floatingActionButton: GestureDetector(
             onTap: () {},
             child: Container(
-                width: 75,
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                          // spreadRadius: 1,
-                          blurRadius: 5)
-                    ],
-                    color: Colors.green.shade300..withOpacity(0.7),
-                    // borderRadius: BorderRadius.circular(70),
-                    shape: BoxShape.circle),
-                child: Image.asset('assets/images/logo3.png')),
+              width: 75,
+              decoration: BoxDecoration(
+                  boxShadow: const [
+                    BoxShadow(
+                        // spreadRadius: 1,
+                        blurRadius: 5)
+                  ],
+                  color: Colors.green.shade300..withOpacity(0.7),
+                  image: DecorationImage(
+                      image:
+                          Image.asset('assets/images/logo_button.jpeg').image),
+                  shape: BoxShape.circle),
+              child: Image.asset(
+                'assets/images/logo_button.jpeg',
+                scale: 1000,
+              ),
+            ),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
@@ -106,137 +110,138 @@ class HomeView extends GetView<HomeController> {
             // color: Colors.transparent,
             height: 100,
             // surfaceTintColor: Colors.transparent,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 15.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () => controller.onItemTappedNav(0),
-                      icon: Icon(Icons.home, size: 30,),
-                      color: controller.selectedNavIndex == 0
-                          ? Colors.green.shade700
-                                                  .withOpacity(0.7)
-                          : Colors.grey.shade700,
-                    ),
-                    Text(
-                      'Home',
-                      style: TextStyle(
-                        fontSize: 15,
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 15.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => controller.onItemTappedNav(0),
+                        icon: const Icon(
+                          Icons.home,
+                          size: 30,
+                        ),
                         color: controller.selectedNavIndex == 0
-                            ? Colors.green.shade700
-                                                  .withOpacity(0.7)
+                            ? Colors.green.shade700.withOpacity(0.7)
                             : Colors.grey.shade700,
-                            fontWeight: FontWeight.w600
                       ),
-                    ),
-                  ],
+                      Text(
+                        'Home',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: controller.selectedNavIndex == 0
+                                ? Colors.green.shade700.withOpacity(0.7)
+                                : Colors.grey.shade700,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () => controller.onItemTappedNav(1),
-                      icon: const Icon(Icons.show_chart, size: 30,),
-                      color: controller.selectedNavIndex == 1
-                          ? Colors.green.shade700
-                                                  .withOpacity(0.7)
-                          : Colors.grey.shade700,
-                    ),
-                    Text(
-                      'Chart',
-                      style: TextStyle(
-                        fontSize: 15,
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => controller.onItemTappedNav(1),
+                        icon: const Icon(
+                          Icons.show_chart,
+                          size: 30,
+                        ),
                         color: controller.selectedNavIndex == 1
-                            ? Colors.green.shade700
-                                                  .withOpacity(0.7)
+                            ? Colors.green.shade700.withOpacity(0.7)
                             : Colors.grey.shade700,
-                            fontWeight: FontWeight.w600
                       ),
-                    ),
-                  ],
+                      Text(
+                        'Chart',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: controller.selectedNavIndex == 1
+                                ? Colors.green.shade700.withOpacity(0.7)
+                                : Colors.grey.shade700,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              // const Expanded(child: SizedBox.shrink()),
-               Expanded(child: Center(
-                 child: Padding(
-                   padding: const EdgeInsets.only(top: 50),
-                   child: Text(
-                          'Map',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey.shade700, 
+                // const Expanded(child: SizedBox.shrink()),
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Text(
+                        'Map',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey.shade700,
                             fontWeight: FontWeight.w600
                             // controller.selectedNavIndex == 1
                             //     ? Colors.orange.shade800
                             //     :
-                                 
-                          ),
+
+                            ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => controller.onItemTappedNav(2),
+                        icon: const Icon(
+                          Icons.tab,
+                          size: 30,
                         ),
-                 ),
-               ),),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () => controller.onItemTappedNav(2),
-                      icon: const Icon(Icons.tab, size: 30,),
-                      color: controller.selectedNavIndex == 2
-                          ? Colors.green.shade700
-                                                  .withOpacity(0.7)
-                          : Colors.grey.shade700,
-                    ),
-                    Text(
-                      'Tabs',
-                      style: TextStyle(
-                        fontSize: 15,
                         color: controller.selectedNavIndex == 2
-                            ? Colors.green.shade700
-                                                  .withOpacity(0.7)
+                            ? Colors.green.shade700.withOpacity(0.7)
                             : Colors.grey.shade700,
-                            fontWeight: FontWeight.w600
                       ),
-                    ),
-                  ],
+                      Text(
+                        'Tabs',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: controller.selectedNavIndex == 2
+                                ? Colors.green.shade700.withOpacity(0.7)
+                                : Colors.grey.shade700,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () => controller.onItemTappedNav(3),
-                      icon: const Icon(Icons.settings, size: 30,),
-                      color: controller.selectedNavIndex == 3
-                          ? Colors.green.shade700
-                                                  .withOpacity(0.7)
-                          : Colors.grey.shade700,
-                          
-                    ),
-                    Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 15,
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => controller.onItemTappedNav(3),
+                        icon: const Icon(
+                          Icons.settings,
+                          size: 30,
+                        ),
                         color: controller.selectedNavIndex == 3
-                            ? Colors.green.shade700
-                                                  .withOpacity(0.7)
+                            ? Colors.green.shade700.withOpacity(0.7)
                             : Colors.grey.shade700,
-                            fontWeight: FontWeight.w700
                       ),
-                    ),
-                  ],
+                      Text(
+                        'Settings',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: controller.selectedNavIndex == 3
+                                ? Colors.green.shade700.withOpacity(0.7)
+                                : Colors.grey.shade700,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
           // endDrawer: const DrawerScreen(),
           body: Stack(
             alignment: Alignment.topRight,
@@ -293,13 +298,14 @@ class HomeView extends GetView<HomeController> {
                           Container(
                             decoration: BoxDecoration(
                               boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: Offset(0, 1), // changes position of shadow
-                          ),
-                        ],
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(
+                                      0, 1), // changes position of shadow
+                                ),
+                              ],
                               color: (controller.isSatellite)
                                   ? Colors.white
                                   : Colors.grey.shade300,
@@ -389,13 +395,14 @@ class HomeView extends GetView<HomeController> {
                         Container(
                           decoration: BoxDecoration(
                             boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: Offset(0, 1), // changes position of shadow
-                          ),
-                        ],
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset:
+                                    Offset(0, 1), // changes position of shadow
+                              ),
+                            ],
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(70),
                           ),
@@ -419,7 +426,8 @@ class HomeView extends GetView<HomeController> {
                             color: Colors.black.withOpacity(0.5),
                             spreadRadius: 2,
                             blurRadius: 4,
-                            offset: Offset(0, 1), // changes position of shadow
+                            offset: const Offset(
+                                0, 1), // changes position of shadow
                           ),
                         ],
                         borderRadius: BorderRadius.circular(70),
@@ -430,6 +438,236 @@ class HomeView extends GetView<HomeController> {
                             await controller.sendManualSnap(isRelocate: true);
                           },
                           icon: const Icon(Icons.near_me, size: 35)),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (controller.isDistance)
+                          Container(
+                               width: device.width*0.7,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(
+                                      0, 1), 
+                                ),
+                              ],
+                              color: (controller.isDistance)
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 8),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.setDistanceIndex = 1;
+                                    },
+                                    child: Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                          child: Text(
+                                        "1m",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.w700),
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.setDistanceIndex = 10;
+                                    },
+                                    child: Container(
+                                      width: 42,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                          child: Text(
+                                        "10m",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.w700),
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.setDistanceIndex = 100;
+                                    },
+                                    child: Container(
+                                      width: 50,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        // image: DecorationImage(
+                                        //     image: Image.asset(
+                                        //       'assets/images/100_img.png',
+                                        //     ).image,
+                                        //     fit: BoxFit.fitWidth),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                          child: Text(
+                                        "100m",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.w700),
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.setDistanceIndex = 1000;
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        // image: DecorationImage(
+                                        //     image: Image.asset(
+                                        //       'assets/images/1000_img.png',
+                                        //     ).image,
+                                        //     fit: BoxFit.fitWidth),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                          child: Text(
+                                        "1km",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.w700),
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.setDistanceIndex = 10000;
+                                    },
+                                    child: Container(
+                                      width: 50,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        // image: DecorationImage(
+                                        //     image: Image.asset(
+                                        //       'assets/images/10000_img.png',
+                                        //     ).image,
+                                        //     fit: BoxFit.fitWidth),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                          child: Text(
+                                        "10km",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.w700),
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.setDistanceIndex = 100000;
+                                    },
+                                    child: Container(
+                                      width: 55,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        // image: DecorationImage(
+                                        //     image: Image.asset(
+                                        //       'assets/images/10000_img.png',
+                                        //     ).image,
+                                        //     fit: BoxFit.fitWidth),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                          child: Text(
+                                        "100km",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.w700),
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        if (controller.isDistance)
+                          const SizedBox(
+                            width: 15,
+                          ),
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset:
+                                    Offset(0, 1), // changes position of shadow
+                              ),
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(70),
+                          ),
+                          child: IconButton(
+                              onPressed: () {
+                                controller.setDistance = !controller.isDistance;
+                              },
+                              icon: const Icon(Icons.grid_3x3, size: 35)),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -526,9 +764,6 @@ class ShowDialog2 extends StatelessWidget {
     });
   }
 }
-
-
-
 
 class ShowDialog extends StatelessWidget {
   const ShowDialog({super.key});

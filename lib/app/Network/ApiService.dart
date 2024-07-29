@@ -8,7 +8,7 @@ import 'ApiMethod.dart';
 class ApiService {
   static var client = http.Client();
 
-  static Future sendManualSnap(String regioncode, String latlng) async {
+  static Future sendManualSnap(String regioncode, String latlng, String dist) async {
     // Replace with the URL of your Node.js API endpoint
     String createOrderAPI = ApiMethods.getManualSnap();
 
@@ -40,7 +40,7 @@ class ApiService {
       "column1": "6",
       "rings": "2",
       "separator": "SEMICOLON",
-      "size": "10",
+      "size": dist,
       "srid": "3035",
       "json_data": [
         {
