@@ -73,7 +73,7 @@ class HomeController extends GetxController {
 
   set setDistanceIndex(int value) {
     distanceIndex = value;
-    sendManualSnap(distance: value.toString(), isDistanceRelocate: true);
+    sendManualSnap(isDistanceRelocate: true);
     update();
   }
 
@@ -132,6 +132,7 @@ class HomeController extends GetxController {
         Get.defaultDialog(
             title: 'Loading', content: const CircularProgressIndicator());
       setManualSnap = true;
+      distance=distanceIndex.toString();
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best,
           forceAndroidLocationManager: false);
@@ -150,7 +151,7 @@ class HomeController extends GetxController {
         regioncode = "rg9";
       }
       final resp =
-          await ApiService.sendManualSnap(regioncode, latLng, distance);
+          await ApiService.sendManualSnap(regioncode, latLng, distanceIndex.toString());
 
       print(resp);
       manualSnap = ManualSnap.fromJson(resp);
