@@ -196,8 +196,8 @@ class HomeController extends GetxController {
               : Colors.white54,
           borderColor: isSelectedPolygon[coordinates.indexOf(e)]
               ? Colors.green.shade900
-              : Colors.blue,
-          borderStrokeWidth: 3.0,
+              : Color(0xFF00008B).withOpacity(0.5),
+          borderStrokeWidth: 1.5,
           isFilled: true,
         ));
       }));

@@ -1,3 +1,4 @@
+import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +7,9 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smartsnapper/app/modules/home/controllers/home_controller.dart';
 import 'package:smartsnapper/app/modules/home/views/map_widget.dart';
+import 'package:smartsnapper/app/modules/home/views/widgets/custom.grid.view.dart';
+import 'package:smartsnapper/app/modules/home/views/widgets/group.button.dialog.dart';
+// import 'package:smartsnapper/app/modules/home/views/widgets/group.dialog.dart';
 
 class BottomNavBar extends StatelessWidget {
   @override
@@ -74,7 +78,7 @@ class HomeView extends GetView<HomeController> {
       print("Coordinates are");
       print(controller.coordinates.isEmpty);
       print(controller.polygones);
-      final device=MediaQuery.of(context).size;
+      final device = MediaQuery.of(context).size;
       return Scaffold(
           extendBody: true,
           key: _scaffoldKey,
@@ -290,131 +294,36 @@ class HomeView extends GetView<HomeController> {
                     const SizedBox(
                       height: 15,
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (controller.isSatellite)
-                          Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 4,
-                                  offset: const Offset(
-                                      0, 1), // changes position of shadow
-                                ),
-                              ],
-                              color: (controller.isSatellite)
-                                  ? Colors.white
-                                  : Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(8),
+                    
+                    Builder(builder: (context) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 4,
+                              offset: const Offset(
+                                  0, 1), // changes position of shadow
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.setMapIndex = 0;
-                                  },
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: Image.asset(
-                                                  'assets/images/satellite_image.jpg')
-                                              .image,
-                                          fit: BoxFit.cover),
-                                      color: Colors.green.shade500,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.setMapIndex = 1;
-                                  },
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: Image.asset(
-                                                  'assets/images/satellite_image.jpg')
-                                              .image,
-                                          fit: BoxFit.cover),
-                                      color: Colors.green.shade500,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.setMapIndex = 2;
-                                  },
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: Image.asset(
-                                            'assets/images/base_map.png',
-                                          ).image,
-                                          fit: BoxFit.cover),
-                                      color: Colors.blue.shade500,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Image.asset(
-                                        'assets/images/base_map.png'),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                        if (controller.isSatellite)
-                          const SizedBox(
-                            width: 15,
-                          ),
-                        Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(70),
-                          ),
-                          child: IconButton(
-                              onPressed: () {
-                                controller.setSatelliteView =
-                                    !controller.isSatellite;
-                              },
-                              icon: const Icon(Icons.layers, size: 35)),
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(70),
                         ),
-                      ],
-                    ),
+                        child: IconButton(
+                            onPressed: () async {
+                              // await showDialog(context: context, builder: _localDialogBuilder);
+                              await showAlignedDialog(
+                                  context: context,
+                                  builder: _appsDialogBuilder,
+                                  followerAnchor: Alignment.centerRight,
+                                  targetAnchor: Alignment.centerLeft,
+                                  barrierColor: Colors.transparent);
+                              // controller.setDistance = !controller.isDistance;
+                            },
+                            icon: const Icon(Icons.apps, size: 35)),
+                      );
+                    }),
                     const SizedBox(
                       height: 15,
                     ),
@@ -442,21 +351,21 @@ class HomeView extends GetView<HomeController> {
                     const SizedBox(
                       height: 15,
                     ),
+                    
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         if (controller.isDistance)
                           Container(
-                               width: device.width*0.7,
+                            width: device.width * 0.6,
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.5),
                                   spreadRadius: 2,
                                   blurRadius: 4,
-                                  offset: const Offset(
-                                      0, 1), 
+                                  offset: const Offset(0, 1),
                                 ),
                               ],
                               color: (controller.isDistance)
@@ -477,30 +386,6 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      controller.setDistanceIndex = 1;
-                                    },
-                                    child: Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Center(
-                                          child: Text(
-                                        "1m",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w700),
-                                      )),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
                                       controller.setDistanceIndex = 10;
                                     },
                                     child: Container(
@@ -514,9 +399,9 @@ class HomeView extends GetView<HomeController> {
                                           child: Text(
                                         "10m",
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 16,
                                             color: Colors.green,
-                                            fontWeight: FontWeight.w700),
+                                            fontWeight: FontWeight.w800),
                                       )),
                                     ),
                                   ),
@@ -543,9 +428,9 @@ class HomeView extends GetView<HomeController> {
                                           child: Text(
                                         "100m",
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 16,
                                             color: Colors.green,
-                                            fontWeight: FontWeight.w700),
+                                            fontWeight: FontWeight.w800),
                                       )),
                                     ),
                                   ),
@@ -572,9 +457,9 @@ class HomeView extends GetView<HomeController> {
                                           child: Text(
                                         "1km",
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 16,
                                             color: Colors.green,
-                                            fontWeight: FontWeight.w700),
+                                            fontWeight: FontWeight.w800),
                                       )),
                                     ),
                                   ),
@@ -601,9 +486,9 @@ class HomeView extends GetView<HomeController> {
                                           child: Text(
                                         "10km",
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 16,
                                             color: Colors.green,
-                                            fontWeight: FontWeight.w700),
+                                            fontWeight: FontWeight.w800),
                                       )),
                                     ),
                                   ),
@@ -630,9 +515,9 @@ class HomeView extends GetView<HomeController> {
                                           child: Text(
                                         "100km",
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 16,
                                             color: Colors.green,
-                                            fontWeight: FontWeight.w700),
+                                            fontWeight: FontWeight.w800),
                                       )),
                                     ),
                                   ),
@@ -647,26 +532,7 @@ class HomeView extends GetView<HomeController> {
                           const SizedBox(
                             width: 15,
                           ),
-                        Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(70),
-                          ),
-                          child: IconButton(
-                              onPressed: () {
-                                controller.setDistance = !controller.isDistance;
-                              },
-                              icon: const Icon(Icons.grid_3x3, size: 35)),
-                        ),
+                        
                       ],
                     ),
                   ],
@@ -853,6 +719,14 @@ class LogbookScreen extends StatelessWidget {
 class CalendarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Calendar Screen'));
+    return const Center(child: Text('Calendar Screen'));
   }
+}
+
+
+
+WidgetBuilder get _appsDialogBuilder {
+  return (BuildContext context) {
+    return const GroupButtonDialog();
+  };
 }

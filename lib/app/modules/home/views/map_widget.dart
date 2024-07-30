@@ -50,7 +50,7 @@ class _MapWidgetState extends State<MapWidget> {
                 print("Is Selected");
                 print(controller.isSelectedPolygon[selectedIndex]);
                 if (controller.isSelectedPolygon[selectedIndex] == false) {
-                  controller.isSelectedPolygon = List.filled(25, false);
+                  // controller.isSelectedPolygon = List.filled(25, false);
                   controller.isSelectedPolygon[selectedIndex] = true;
 
                   controller.blywsg = controller
@@ -93,8 +93,8 @@ class _MapWidgetState extends State<MapWidget> {
                       controller.listOfData[selectedIndex].areaseal);
                 } else {
                   
-                  selectedIndex = -1;
-
+                  // selectedIndex = -1;
+                  controller.isSelectedPolygon[selectedIndex]=false;
                   print("Selecting selected");
                 }
               }
@@ -112,8 +112,8 @@ class _MapWidgetState extends State<MapWidget> {
                   borderColor: controller
                           .isSelectedPolygon[controller.coordinates.indexOf(e)]
                       ? Colors.green.shade900.withOpacity(0.7)
-                      : Colors.blue,
-                  borderStrokeWidth: 3.0,
+                      : Color(0xFF00008B).withOpacity(0.5),
+                  borderStrokeWidth: 1.5,
                   isFilled: true,
                 ));
               }));
@@ -132,8 +132,8 @@ class _MapWidgetState extends State<MapWidget> {
                   borderColor: controller
                           .isSelectedPolygon[controller.coordinates.indexOf(e)]
                       ? Colors.green.shade900
-                      : Colors.blue,
-                  borderStrokeWidth: 3.0,
+                      : Color(0xFF00008B).withOpacity(0.5),
+                  borderStrokeWidth: 1.5,
                   isFilled: true,
                 ));
               }));
