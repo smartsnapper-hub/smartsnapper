@@ -208,9 +208,9 @@ class HomeController extends GetxController {
         } else if (distance == "100") {
           mapController!.move(centerCoordinates, 14.5);
         } else if (distance == "10") {
-          mapController!.move(centerCoordinates, 17.5);
+          mapController!.move(centerCoordinates, 17.7);
         }  else {
-          mapController!.move(centerCoordinates, 18);
+          mapController!.move(centerCoordinates, 21.5);
         }
         Get.back();
         Get.back();
@@ -227,9 +227,9 @@ class HomeController extends GetxController {
         } else if (distance == "100") {
           mapController!.move(centerCoordinates, 14.5);
         } else if (distance == "10") {
-          mapController!.move(centerCoordinates, 17.5);
+          mapController!.move(centerCoordinates, 17.9);
         } else  {
-          mapController!.move(centerCoordinates, 18);
+          mapController!.move(centerCoordinates, 21.5);
         }
         Get.back();
         Get.back();

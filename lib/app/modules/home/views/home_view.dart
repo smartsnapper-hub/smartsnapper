@@ -258,8 +258,6 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   Expanded(
                     child: (controller.coordinates.isEmpty)
-                        // ? Text("Test Coordinates")
-
                         ? const FlutterMapWidget()
                         : const MapWidget(),
                   ),

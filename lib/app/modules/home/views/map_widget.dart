@@ -17,7 +17,7 @@ class _MapWidgetState extends State<MapWidget> {
       return FlutterMap(
         mapController: controller.mapController,
         options: MapOptions(
-          maxZoom: 18.4,
+          maxZoom: 22,
           minZoom: 2,
           onTap: (tapPosition, point) async {
             int selectedIndex = -1;
@@ -25,19 +25,19 @@ class _MapWidgetState extends State<MapWidget> {
             // controller.isSelectedPolygon = List.filled(25, false);
             print("Distance is");
             print(controller.distanceIndex.toString());
-            if (controller.distanceIndex.toString() == "100000") {
+            if (controller.distanceIndex.toInt().toString() == "100000") {
               controller.mapController!.move(point, 6.3);
-            } else if (controller.distanceIndex.toString() == "10000") {
+            } else if (controller.distanceIndex.toInt().toString() == "10000") {
               controller.mapController!.move(point, 9.3);
-            } else if (controller.distanceIndex.toString() == "1000") {
+            } else if (controller.distanceIndex.toInt().toString() == "1000") {
               controller.mapController!.move(point, 12.3);
-            } else if (controller.distanceIndex.toString() == "100") {
+            } else if (controller.distanceIndex.toInt().toString() == "100") {
               controller.mapController!.move(point, 15.2);
-            } else if (controller.distanceIndex.toString() == "10") {
+            } else if (controller.distanceIndex.toInt().toString() == "10") {
               print("zrec");
               controller.mapController!.move(point, 18.3);
             } else {
-              controller.mapController!.move(point, 18.3);
+              controller.mapController!.move(point, 21.5);
             }
             // controller.update();
             controller.polygones.forEach((element) {
@@ -92,9 +92,8 @@ class _MapWidgetState extends State<MapWidget> {
                       controller.listOfData[selectedIndex].datum,
                       controller.listOfData[selectedIndex].areaseal);
                 } else {
-                  
                   // selectedIndex = -1;
-                  controller.isSelectedPolygon[selectedIndex]=false;
+                  controller.isSelectedPolygon[selectedIndex] = false;
                   print("Selecting selected");
                 }
               }
@@ -146,9 +145,12 @@ class _MapWidgetState extends State<MapWidget> {
         children: [
           (controller.mapIndex == 0)
               ? TileLayer(
+                  maxNativeZoom: 18,
+                  maxZoom: 22,
+                  tileProvider: CachedTileProvider(),
                   urlTemplate:
                       'https://mts1.google.com/vt/lyrs=s@186112443&x={x}&y={y}&z={z}',
-                  subdomains: [
+                  subdomains: const [
                     'mt0',
                     'mt1',
                     'mt2',
@@ -157,9 +159,12 @@ class _MapWidgetState extends State<MapWidget> {
                 )
               : (controller.mapIndex == 1)
                   ? TileLayer(
+                      maxNativeZoom: 18,
+                      maxZoom: 22,
+                      tileProvider: CachedTileProvider(),
                       urlTemplate:
                           'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
-                      subdomains: [
+                      subdomains: const [
                         'mt0',
                         'mt1',
                         'mt2',
@@ -167,13 +172,32 @@ class _MapWidgetState extends State<MapWidget> {
                       ], // No subdomains needed for Google Hybrid tiles
                     )
                   : TileLayer(
+                      maxNativeZoom: 18,
+                      maxZoom: 22,
+                      tileProvider: CachedTileProvider(),
                       urlTemplate:
                           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      subdomains: ['a', 'b', 'c'],
+                      subdomains:const ['a', 'b', 'c'],
                     ),
           PolygonLayer(polygons: controller.polygones),
         ],
       );
     });
+  }
+}
+
+class CachedTileProvider extends TileProvider {
+  @override
+  ImageProvider getImage(TileCoordinates coordinates, TileLayer options) {
+    // Adjust the coordinates to prevent white tiles by capping to maxNativeZoom
+    int adjustedZoom = (coordinates.z > ((options.maxNativeZoom) ?? 18)
+            ? options.maxNativeZoom
+            : coordinates.z) ??
+        0;
+    final url = options.tileProvider.getTileUrl(
+      TileCoordinates(coordinates.x, coordinates.y, adjustedZoom),
+      options,
+    );
+    return NetworkImage(url);
   }
 }
