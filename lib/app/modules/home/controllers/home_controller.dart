@@ -121,7 +121,7 @@ class HomeController extends GetxController {
 
   Future<void> sendManualSnap(
       {bool isRelocate = false,
-      String distance = "10",
+      double distance = 10.0,
       bool isDistanceRelocate = false}) async {
     try {
       // print(otp);
@@ -132,7 +132,9 @@ class HomeController extends GetxController {
         Get.defaultDialog(
             title: 'Loading', content: const CircularProgressIndicator());
       setManualSnap = true;
-      distance=distanceIndex.toInt().toString();
+      print("Distance snap is");
+      distance=distanceIndex;
+      print(distance);
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best,
           forceAndroidLocationManager: false);
@@ -189,28 +191,32 @@ class HomeController extends GetxController {
           points: e,
           // color: Colors.blue,
           color: isSelectedPolygon[coordinates.indexOf(e)]
-              ? Colors.green.shade700
+              ? Colors.green.shade600.withOpacity(0.75)
               : Colors.white54,
           borderColor: isSelectedPolygon[coordinates.indexOf(e)]
-              ? Colors.green.shade900
+              ? Colors.green.shade900.withOpacity(0.75)
               : Color(0xFF00008B).withOpacity(0.5),
           borderStrokeWidth: 1.5,
           isFilled: true,
         ));
       }));
       if (isRelocate) {
-        if (distance == "100000") {
+        if (distance == 100000.0) {
           mapController!.move(centerCoordinates, 5.5);
-        } else if (distance == "10000") {
+        } else if (distance == 10000) {
           mapController!.move(centerCoordinates, 8.5);
-        } else if (distance == "1000") {
+        } else if (distance == 1000) {
           mapController!.move(centerCoordinates, 11.5);
-        } else if (distance == "100") {
+        } else if (distance == 100) {
           mapController!.move(centerCoordinates, 14.5);
-        } else if (distance == "10") {
+        } else if (distance == 10) {
           mapController!.move(centerCoordinates, 17.7);
-        }  else {
+        } else if (distance == 1) {
           mapController!.move(centerCoordinates, 21.5);
+        } else if (distance == 0.1) {
+          mapController!.move(centerCoordinates, 24.5);
+        } else  {
+          mapController!.move(centerCoordinates, 27.5);
         }
         Get.back();
         Get.back();
@@ -218,18 +224,23 @@ class HomeController extends GetxController {
       // print("Distance is");
       // print(distance);
       if (isDistanceRelocate) {
-        if (distance == "100000") {
+        if (distance == 100000) {
           mapController!.move(centerCoordinates, 5.5);
-        } else if (distance == "10000") {
+        } else if (distance == 10000) {
           mapController!.move(centerCoordinates, 8.5);
-        } else if (distance == "1000") {
+        } else if (distance == 1000) {
           mapController!.move(centerCoordinates, 11.5);
-        } else if (distance == "100") {
+        } else if (distance == 100) {
           mapController!.move(centerCoordinates, 14.5);
-        } else if (distance == "10") {
+        } else if (distance == 10) {
           mapController!.move(centerCoordinates, 17.9);
-        } else  {
+        } else if (distance == 1) {
           mapController!.move(centerCoordinates, 21.5);
+        } else if (distance == 0.1) {
+          print("Reaching here");
+          mapController!.move(centerCoordinates, 24.5);
+        } else  {
+          mapController!.move(centerCoordinates, 27.5);
         }
         Get.back();
         Get.back();

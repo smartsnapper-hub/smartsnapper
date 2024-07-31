@@ -17,27 +17,30 @@ class _MapWidgetState extends State<MapWidget> {
       return FlutterMap(
         mapController: controller.mapController,
         options: MapOptions(
-          maxZoom: 22,
-          minZoom: 2,
+          maxZoom: 28,
+          minZoom: 3,
           onTap: (tapPosition, point) async {
             int selectedIndex = -1;
-            print(tapPosition);
+            // print(tapPosition);
             // controller.isSelectedPolygon = List.filled(25, false);
             print("Distance is");
             print(controller.distanceIndex.toString());
-            if (controller.distanceIndex.toInt().toString() == "100000") {
+            if (controller.distanceIndex == 100000) {
               controller.mapController!.move(point, 6.3);
-            } else if (controller.distanceIndex.toInt().toString() == "10000") {
+            } else if (controller.distanceIndex == 10000) {
               controller.mapController!.move(point, 9.3);
-            } else if (controller.distanceIndex.toInt().toString() == "1000") {
+            } else if (controller.distanceIndex == 1000) {
               controller.mapController!.move(point, 12.3);
-            } else if (controller.distanceIndex.toInt().toString() == "100") {
+            } else if (controller.distanceIndex == 100) {
               controller.mapController!.move(point, 15.2);
-            } else if (controller.distanceIndex.toInt().toString() == "10") {
-              print("zrec");
+            } else if (controller.distanceIndex == 10) {
               controller.mapController!.move(point, 18.3);
-            } else {
+            } else if (controller.distanceIndex == 1) {
               controller.mapController!.move(point, 21.5);
+            } else if (controller.distanceIndex == 0.1) {
+              controller.mapController!.move(point, 24.5);
+            } else {
+              controller.mapController!.move(point, 27.5);
             }
             // controller.update();
             controller.polygones.forEach((element) {
@@ -45,10 +48,10 @@ class _MapWidgetState extends State<MapWidget> {
               bool isGeoPointInPolygon =
                   controller.geodesy.isGeoPointInPolygon(point, element.points);
               if (isGeoPointInPolygon == true) {
-                print(element.points);
+                // print(element.points);
                 selectedIndex = controller.polygones.indexOf(element);
-                print("Is Selected");
-                print(controller.isSelectedPolygon[selectedIndex]);
+                // print("Is Selected");
+                // print(controller.isSelectedPolygon[selectedIndex]);
                 if (controller.isSelectedPolygon[selectedIndex] == false) {
                   // controller.isSelectedPolygon = List.filled(25, false);
                   controller.isSelectedPolygon[selectedIndex] = true;
@@ -94,7 +97,7 @@ class _MapWidgetState extends State<MapWidget> {
                 } else {
                   // selectedIndex = -1;
                   controller.isSelectedPolygon[selectedIndex] = false;
-                  print("Selecting selected");
+                  // print("Selecting selected");
                 }
               }
             });
@@ -106,11 +109,11 @@ class _MapWidgetState extends State<MapWidget> {
                   // color: Colors.blue,
                   color: controller
                           .isSelectedPolygon[controller.coordinates.indexOf(e)]
-                      ? Colors.green.shade700.withOpacity(0.7)
+                      ? Colors.green.shade600.withOpacity(0.75)
                       : Colors.white54,
                   borderColor: controller
                           .isSelectedPolygon[controller.coordinates.indexOf(e)]
-                      ? Colors.green.shade900.withOpacity(0.7)
+                      ? Colors.green.shade900.withOpacity(0.75)
                       : Color(0xFF00008B).withOpacity(0.5),
                   borderStrokeWidth: 1.5,
                   isFilled: true,
@@ -126,11 +129,11 @@ class _MapWidgetState extends State<MapWidget> {
                   // color: Colors.blue,
                   color: controller
                           .isSelectedPolygon[controller.coordinates.indexOf(e)]
-                      ? Colors.green.shade700
+                      ? Colors.green.shade600.withOpacity(0.75)
                       : Colors.white54,
                   borderColor: controller
                           .isSelectedPolygon[controller.coordinates.indexOf(e)]
-                      ? Colors.green.shade900
+                      ? Colors.green.shade900.withOpacity(0.75)
                       : Color(0xFF00008B).withOpacity(0.5),
                   borderStrokeWidth: 1.5,
                   isFilled: true,
@@ -146,7 +149,7 @@ class _MapWidgetState extends State<MapWidget> {
           (controller.mapIndex == 0)
               ? TileLayer(
                   maxNativeZoom: 18,
-                  maxZoom: 22,
+                  maxZoom: 28,
                   tileProvider: CachedTileProvider(),
                   urlTemplate:
                       'https://mts1.google.com/vt/lyrs=s@186112443&x={x}&y={y}&z={z}',
@@ -160,7 +163,7 @@ class _MapWidgetState extends State<MapWidget> {
               : (controller.mapIndex == 1)
                   ? TileLayer(
                       maxNativeZoom: 18,
-                      maxZoom: 22,
+                      maxZoom: 28,
                       tileProvider: CachedTileProvider(),
                       urlTemplate:
                           'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
@@ -173,11 +176,11 @@ class _MapWidgetState extends State<MapWidget> {
                     )
                   : TileLayer(
                       maxNativeZoom: 18,
-                      maxZoom: 22,
+                      maxZoom: 28,
                       tileProvider: CachedTileProvider(),
                       urlTemplate:
                           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      subdomains:const ['a', 'b', 'c'],
+                      subdomains: const ['a', 'b', 'c'],
                     ),
           PolygonLayer(polygons: controller.polygones),
         ],
