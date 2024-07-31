@@ -14,15 +14,15 @@ class MapSelectView extends StatelessWidget {
     final device = MediaQuery.of(context).size;
     return GetBuilder<HomeController>(builder: (controller) {
       return Padding(
-        padding: const EdgeInsets.only(top: 12.0),
+        padding: const EdgeInsets.only(right: 12.0),
         child: Container(
-          width: device.width * 0.2,
+          width: device.width * 0.4,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(4)),
           child: GridView.count(
             shrinkWrap: true,
-            crossAxisCount: 1,
+            crossAxisCount: 3,
             padding: const EdgeInsets.all(2.0),
             mainAxisSpacing: 2.0,
             crossAxisSpacing: 2.0,

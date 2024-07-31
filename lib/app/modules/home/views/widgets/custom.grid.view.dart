@@ -34,6 +34,23 @@ class CustomGridView extends StatelessWidget {
         text: '1m',
         iconSize: 10.0,
         distanceIndex: 1),
+    GridItem(
+        icon: Icons.square_outlined,
+        text: '100mm',
+        iconSize: 8.0,
+        distanceIndex: 0.1),
+    GridItem(
+        icon: Icons.square_outlined,
+        text: '10mm',
+        iconSize: 6.0,
+        distanceIndex: 0.01),
+    GridItem(
+        icon: Icons.square_outlined,
+        text: '1mm',
+        iconSize: 4.0,
+        distanceIndex: 0.001),
+
+
   ];
 
   @override
@@ -60,7 +77,7 @@ class CustomGridView extends StatelessWidget {
                   controller.setDistanceIndex = item.distanceIndex;
                 },
                 child: Container(
-                  color: Colors.green.shade700.withOpacity(0.7),
+                  color: Colors.green.shade500.withOpacity(0.7),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
@@ -68,7 +85,7 @@ class CustomGridView extends StatelessWidget {
                       Icon(
                         item.icon,
                         size: item.iconSize,
-                        color: Colors.white,
+                        color: Colors.blue.shade700,
                       ),
                       const SizedBox(height: 8.0),
                       Text(
@@ -94,7 +111,7 @@ class GridItem {
   final IconData icon;
   final String text;
   final double iconSize;
-  final int distanceIndex;
+  final double distanceIndex;
   GridItem(
       {required this.icon,
       required this.text,

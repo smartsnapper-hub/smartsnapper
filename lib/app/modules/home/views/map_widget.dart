@@ -36,7 +36,7 @@ class _MapWidgetState extends State<MapWidget> {
             } else if (controller.distanceIndex.toString() == "10") {
               print("zrec");
               controller.mapController!.move(point, 18.3);
-            } else if (controller.distanceIndex.toString() == "1") {
+            } else {
               controller.mapController!.move(point, 18.3);
             }
             // controller.update();

@@ -11,6 +11,8 @@ import 'package:smartsnapper/app/modules/home/views/widgets/custom.grid.view.dar
 import 'package:smartsnapper/app/modules/home/views/widgets/group.button.dialog.dart';
 // import 'package:smartsnapper/app/modules/home/views/widgets/group.dialog.dart';
 
+import 'package:smartsnapper/app/modules/home/views/widgets/map.select.widget.dart';
+
 class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -294,7 +296,7 @@ class HomeView extends GetView<HomeController> {
                     const SizedBox(
                       height: 15,
                     ),
-                    
+
                     Builder(builder: (context) {
                       return Container(
                         decoration: BoxDecoration(
@@ -313,13 +315,13 @@ class HomeView extends GetView<HomeController> {
                         child: IconButton(
                             onPressed: () async {
                               // await showDialog(context: context, builder: _localDialogBuilder);
-                              await showAlignedDialog(
-                                  context: context,
-                                  builder: _appsDialogBuilder,
-                                  followerAnchor: Alignment.centerRight,
-                                  targetAnchor: Alignment.centerLeft,
-                                  barrierColor: Colors.transparent);
-                              // controller.setDistance = !controller.isDistance;
+                              // await showAlignedDialog(
+                              //     context: context,
+                              //     builder: _appsDialogBuilder,
+                              //     followerAnchor: Alignment.centerRight,
+                              //     targetAnchor: Alignment.centerLeft,
+                              //     barrierColor: Colors.transparent);
+                              controller.setDistance = !controller.isDistance;
                             },
                             icon: const Icon(Icons.apps, size: 35)),
                       );
@@ -351,190 +353,255 @@ class HomeView extends GetView<HomeController> {
                     const SizedBox(
                       height: 15,
                     ),
-                    
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (controller.isDistance)
-                          Container(
-                            width: device.width * 0.6,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                              color: (controller.isDistance)
-                                  ? Colors.white
-                                  : Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 8),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.setDistanceIndex = 10;
-                                    },
-                                    child: Container(
-                                      width: 42,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Center(
-                                          child: Text(
-                                        "10m",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w800),
-                                      )),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.setDistanceIndex = 100;
-                                    },
-                                    child: Container(
-                                      width: 50,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        // image: DecorationImage(
-                                        //     image: Image.asset(
-                                        //       'assets/images/100_img.png',
-                                        //     ).image,
-                                        //     fit: BoxFit.fitWidth),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Center(
-                                          child: Text(
-                                        "100m",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w800),
-                                      )),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.setDistanceIndex = 1000;
-                                    },
-                                    child: Container(
-                                      width: 40,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        // image: DecorationImage(
-                                        //     image: Image.asset(
-                                        //       'assets/images/1000_img.png',
-                                        //     ).image,
-                                        //     fit: BoxFit.fitWidth),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Center(
-                                          child: Text(
-                                        "1km",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w800),
-                                      )),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.setDistanceIndex = 10000;
-                                    },
-                                    child: Container(
-                                      width: 50,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        // image: DecorationImage(
-                                        //     image: Image.asset(
-                                        //       'assets/images/10000_img.png',
-                                        //     ).image,
-                                        //     fit: BoxFit.fitWidth),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Center(
-                                          child: Text(
-                                        "10km",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w800),
-                                      )),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.setDistanceIndex = 100000;
-                                    },
-                                    child: Container(
-                                      width: 55,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        // image: DecorationImage(
-                                        //     image: Image.asset(
-                                        //       'assets/images/10000_img.png',
-                                        //     ).image,
-                                        //     fit: BoxFit.fitWidth),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Center(
-                                          child: Text(
-                                        "100km",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w800),
-                                      )),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
+                    if (controller.isDistance)
+                      Builder(
+                        builder: (context) => Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset: const Offset(
+                                    0, 1), // changes position of shadow
                               ),
-                            ),
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(70),
                           ),
-                        if (controller.isDistance)
-                          const SizedBox(
-                            width: 15,
+                          child: IconButton(
+                              onPressed: () async {
+                                // controller.setSatelliteView = !controller.isSatellite;
+                                await showAlignedDialog(
+                                    context: context,
+                                    builder: _mapDialogBuilder,
+                                    followerAnchor: Alignment.centerRight,
+                                    targetAnchor: Alignment.centerLeft,
+                                    barrierColor: Colors.transparent);
+                              },
+                              icon: const Icon(Icons.layers, size: 35)),
+                        ),
+                      ),
+                    if (controller.isDistance)
+                      const SizedBox(
+                        height: 15,
+                      ),
+                    if (controller.isDistance)
+                      Builder(builder: (context) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset: const Offset(
+                                    0, 1), // changes position of shadow
+                              ),
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(70),
                           ),
-                        
-                      ],
+                          child: IconButton(
+                              onPressed: () async {
+                                // await showDialog(context: context, builder: _localDialogBuilder);
+                                await showAlignedDialog(
+                                    context: context,
+                                    builder: _localDialogBuilder,
+                                    followerAnchor: Alignment.centerRight,
+                                    targetAnchor: Alignment.centerLeft,
+                                    barrierColor: Colors.transparent);
+                                // controller.setDistance = !controller.isDistance;
+                              },
+                              icon: const Icon(Icons.grid_3x3, size: 35)),
+                        );
+                      }),
+                    const SizedBox(
+                      height: 15,
                     ),
+                    // Row(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     if (controller.isDistance)
+                    //       Container(
+                    //         width: device.width * 0.6,
+                    //         decoration: BoxDecoration(
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: Colors.black.withOpacity(0.5),
+                    //               spreadRadius: 2,
+                    //               blurRadius: 4,
+                    //               offset: const Offset(0, 1),
+                    //             ),
+                    //           ],
+                    //           color: (controller.isDistance)
+                    //               ? Colors.white
+                    //               : Colors.grey.shade300,
+                    //           borderRadius: BorderRadius.circular(8),
+                    //         ),
+                    //         padding: const EdgeInsets.symmetric(
+                    //             horizontal: 4, vertical: 8),
+                    //         child: SingleChildScrollView(
+                    //           scrollDirection: Axis.horizontal,
+                    //           child: Row(
+                    //             mainAxisSize: MainAxisSize.min,
+                    //             mainAxisAlignment: MainAxisAlignment.end,
+                    //             children: [
+                    //               const SizedBox(
+                    //                 width: 10,
+                    //               ),
+                    //               GestureDetector(
+                    //                 onTap: () {
+                    //                   controller.setDistanceIndex = 10;
+                    //                 },
+                    //                 child: Container(
+                    //                   width: 42,
+                    //                   height: 35,
+                    //                   decoration: BoxDecoration(
+                    //                     color: Colors.white,
+                    //                     borderRadius: BorderRadius.circular(5),
+                    //                   ),
+                    //                   child: const Center(
+                    //                       child: Text(
+                    //                     "10m",
+                    //                     style: TextStyle(
+                    //                         fontSize: 16,
+                    //                         color: Colors.green,
+                    //                         fontWeight: FontWeight.w800),
+                    //                   )),
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(
+                    //                 width: 10,
+                    //               ),
+                    //               GestureDetector(
+                    //                 onTap: () {
+                    //                   controller.setDistanceIndex = 100;
+                    //                 },
+                    //                 child: Container(
+                    //                   width: 50,
+                    //                   height: 35,
+                    //                   decoration: BoxDecoration(
+                    //                     // image: DecorationImage(
+                    //                     //     image: Image.asset(
+                    //                     //       'assets/images/100_img.png',
+                    //                     //     ).image,
+                    //                     //     fit: BoxFit.fitWidth),
+                    //                     color: Colors.white,
+                    //                     borderRadius: BorderRadius.circular(5),
+                    //                   ),
+                    //                   child: const Center(
+                    //                       child: Text(
+                    //                     "100m",
+                    //                     style: TextStyle(
+                    //                         fontSize: 16,
+                    //                         color: Colors.green,
+                    //                         fontWeight: FontWeight.w800),
+                    //                   )),
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(
+                    //                 width: 10,
+                    //               ),
+                    //               GestureDetector(
+                    //                 onTap: () {
+                    //                   controller.setDistanceIndex = 1000;
+                    //                 },
+                    //                 child: Container(
+                    //                   width: 40,
+                    //                   height: 35,
+                    //                   decoration: BoxDecoration(
+                    //                     // image: DecorationImage(
+                    //                     //     image: Image.asset(
+                    //                     //       'assets/images/1000_img.png',
+                    //                     //     ).image,
+                    //                     //     fit: BoxFit.fitWidth),
+                    //                     color: Colors.white,
+                    //                     borderRadius: BorderRadius.circular(5),
+                    //                   ),
+                    //                   child: const Center(
+                    //                       child: Text(
+                    //                     "1km",
+                    //                     style: TextStyle(
+                    //                         fontSize: 16,
+                    //                         color: Colors.green,
+                    //                         fontWeight: FontWeight.w800),
+                    //                   )),
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(
+                    //                 width: 10,
+                    //               ),
+                    //               GestureDetector(
+                    //                 onTap: () {
+                    //                   controller.setDistanceIndex = 10000;
+                    //                 },
+                    //                 child: Container(
+                    //                   width: 50,
+                    //                   height: 35,
+                    //                   decoration: BoxDecoration(
+                    //                     // image: DecorationImage(
+                    //                     //     image: Image.asset(
+                    //                     //       'assets/images/10000_img.png',
+                    //                     //     ).image,
+                    //                     //     fit: BoxFit.fitWidth),
+                    //                     color: Colors.white,
+                    //                     borderRadius: BorderRadius.circular(5),
+                    //                   ),
+                    //                   child: const Center(
+                    //                       child: Text(
+                    //                     "10km",
+                    //                     style: TextStyle(
+                    //                         fontSize: 16,
+                    //                         color: Colors.green,
+                    //                         fontWeight: FontWeight.w800),
+                    //                   )),
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(
+                    //                 width: 10,
+                    //               ),
+                    //               GestureDetector(
+                    //                 onTap: () {
+                    //                   controller.setDistanceIndex = 100000;
+                    //                 },
+                    //                 child: Container(
+                    //                   width: 55,
+                    //                   height: 35,
+                    //                   decoration: BoxDecoration(
+                    //                     // image: DecorationImage(
+                    //                     //     image: Image.asset(
+                    //                     //       'assets/images/10000_img.png',
+                    //                     //     ).image,
+                    //                     //     fit: BoxFit.fitWidth),
+                    //                     color: Colors.white,
+                    //                     borderRadius: BorderRadius.circular(5),
+                    //                   ),
+                    //                   child: const Center(
+                    //                       child: Text(
+                    //                     "100km",
+                    //                     style: TextStyle(
+                    //                         fontSize: 16,
+                    //                         color: Colors.green,
+                    //                         fontWeight: FontWeight.w800),
+                    //                   )),
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(
+                    //                 width: 10,
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     if (controller.isDistance)
+                    //       const SizedBox(
+                    //         width: 15,
+                    //       ),
+
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -542,6 +609,18 @@ class HomeView extends GetView<HomeController> {
           ));
     });
   }
+}
+
+WidgetBuilder get _localDialogBuilder {
+  return (BuildContext context) {
+    return CustomGridView();
+  };
+}
+
+WidgetBuilder get _mapDialogBuilder {
+  return (BuildContext context) {
+    return MapSelectView();
+  };
 }
 
 class FlutterMapWidget extends StatefulWidget {
@@ -725,8 +804,8 @@ class CalendarScreen extends StatelessWidget {
 
 
 
-WidgetBuilder get _appsDialogBuilder {
-  return (BuildContext context) {
-    return const GroupButtonDialog();
-  };
-}
+// WidgetBuilder get _appsDialogBuilder {
+//   return (BuildContext context) {
+//     return const GroupButtonDialog();
+//   };
+// }

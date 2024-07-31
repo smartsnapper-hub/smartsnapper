@@ -39,7 +39,7 @@ class HomeController extends GetxController {
   int selectedNavIndex = 0;
   int mapIndex = 0;
 
-  int distanceIndex = 10;
+  double distanceIndex = 10;
   List<MyVector> listOfData = [];
   ManualSnap? manualSnap;
   String datum = "";
@@ -71,7 +71,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  set setDistanceIndex(int value) {
+  set setDistanceIndex(double value) {
     distanceIndex = value;
     sendManualSnap(isDistanceRelocate: true);
     update();
@@ -132,7 +132,7 @@ class HomeController extends GetxController {
         Get.defaultDialog(
             title: 'Loading', content: const CircularProgressIndicator());
       setManualSnap = true;
-      distance=distanceIndex.toString();
+      distance=distanceIndex.toInt().toString();
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best,
           forceAndroidLocationManager: false);
@@ -183,9 +183,6 @@ class HomeController extends GetxController {
           LatLng(latitude3, longitude3),
           LatLng(latitude4, longitude4)
         ]);
-        print("coordinates are");
-        print(coordinates.last);
-        print(listOfCenterCoordinates);
       }
       coordinates.forEach(((e) {
         polygones.add(Polygon(
@@ -212,12 +209,14 @@ class HomeController extends GetxController {
           mapController!.move(centerCoordinates, 14.5);
         } else if (distance == "10") {
           mapController!.move(centerCoordinates, 17.5);
-        } else if (distance == "1") {
+        }  else {
           mapController!.move(centerCoordinates, 18);
         }
         Get.back();
         Get.back();
       }
+      // print("Distance is");
+      // print(distance);
       if (isDistanceRelocate) {
         if (distance == "100000") {
           mapController!.move(centerCoordinates, 5.5);
@@ -229,7 +228,7 @@ class HomeController extends GetxController {
           mapController!.move(centerCoordinates, 14.5);
         } else if (distance == "10") {
           mapController!.move(centerCoordinates, 17.5);
-        } else if (distance == "1") {
+        } else  {
           mapController!.move(centerCoordinates, 18);
         }
         Get.back();
